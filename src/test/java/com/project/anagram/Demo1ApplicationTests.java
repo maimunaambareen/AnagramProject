@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -22,8 +21,6 @@ import com.project.anagram.service.StringAnagramService2;
 @RunWith(MockitoJUnitRunner.class)
 class Demo1ApplicationTests {
 
-StringAnagramService1 s1=new StringAnagramService1();
-StringAnagramService2 s2=new StringAnagramService2();
 @Mock
 AnagramController controller=new AnagramController();
 
@@ -33,7 +30,7 @@ AnagramController controller=new AnagramController();
 	String string1="listen";
 	String string2="silent";
 	boolean b=true;
-		assertEquals(b, s1.chkAnagram(string1, string2));
+		assertEquals(b, StringAnagramService1.chkAnagram(string1, string2));
 	}
 	
 	@Test
@@ -42,15 +39,15 @@ AnagramController controller=new AnagramController();
 		AreAnagram areAnagram=new AreAnagram();
 		String string1="listen";
 		String string2="silent";
-		areAnagram.setAreAnagram(s1.chkAnagram(string1, string2));
+		areAnagram.setAreAnagram(StringAnagramService1.chkAnagram(string1, string2));
 		Mockito
         .when(controller.checkAnagram1(string1, string2))
-        .thenReturn(new ResponseEntity(areAnagram, HttpStatus.OK));
+        .thenReturn(new ResponseEntity<>(areAnagram, HttpStatus.OK));
 	Anagram anagram=new Anagram();
-	anagram.setAnagram(s2.getallAnagrams(string1));
+	anagram.setAnagram(StringAnagramService2.getallAnagrams(string1));
 	Mockito
     .when(controller.checkAnagram2(string1))
-    .thenReturn(new ResponseEntity(anagram, HttpStatus.OK));
+    .thenReturn(new ResponseEntity<>(anagram, HttpStatus.OK));
 	}
 
 	@Test
@@ -60,9 +57,9 @@ AnagramController controller=new AnagramController();
 		String string2="*silent";
 		Mockito
         .when(controller.checkAnagram1(string1, string2))
-        .thenReturn(new ResponseEntity(HttpStatus.BAD_REQUEST));
+        .thenReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 	Mockito
     .when(controller.checkAnagram2(string1))
-    .thenReturn(new ResponseEntity(HttpStatus.BAD_REQUEST));
+    .thenReturn(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 	}
 }
